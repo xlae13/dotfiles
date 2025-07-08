@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# Use neovim for vim if present.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+# doas not required for some system commands
+for command in mount umount sv su shutdown poweroff reboot ; do
+	alias $command="doas $command"
+done; unset command
+
+se() { cd ~/.local/bin; $EDITOR $(fzf) ;}
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	abook="abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook" \
+	nmutt="neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook" \
+	doas="doas --" \
+	cp="cp -i" \
+	mv="mv -i" \
+	rm="rm -i" \
+	sxiv="nsxiv" \
+	bc="bc -ql" \
+	mkd="mkdir -pv" \
+	yt="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ffmpeg="ffmpeg -hide_banner" \
+	ls="ls -Alh --color=always --sort=extension" \
+    lsn="ls -Alh --color=always --sort=time" \
+	..="cd .." \
+	...="cd ../.." \
+	.3="cd ../../.." \
+	.4="cd ../../../.." \
+	.5="cd ../../../../.." \
+
+# These common commands are just too long! Abbreviate them.
+alias \
+  ka="killall" \
+  chadwm="startx ~/.config/chadwm/scripts/run.sh" \
+  g="git" \
+  xi="doas xbps-install -Su" \
+  xr="doas xbps-remove -R" \
+  xq="xbps-query" \
+  xp="xbps-query -l | awk '{ print $2 } | xargs -n1 xbps-uhelper getpkgname'" \
+  rel="xrdb merge ~/.config/chadwm/.Xresources" \
+  audiodetect="pacmd unload-module module-udev-detect && pacmd load-module module-udev-detect" \
+  mnstart="sv start monero" \
+  mnstop="sv stop monero && doas kill -15 $(pidof xmrig)" \
+  lf="~/.local/bin/lfub" \
+  deepseek="docker exec -it ollama ollama run deepseek-r1" \
+
+alias \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+
+# Muh memes
+alias \
+	rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash" \
